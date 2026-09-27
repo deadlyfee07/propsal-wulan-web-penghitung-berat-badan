@@ -34,7 +34,7 @@ Two pages, no database:
 
 ## Frontend assets
 
-`node_modules/` and `public/build/` are now installed and built, so `@vite` resolves. **Rebuild after editing any Blade template** — Tailwind scans Blade for class names at build time, so new classes are silently missing until `npm run build`:
+`node_modules/` and `public/build/` are installed and built on this machine, so `@vite` resolves. They are **gitignored**, so a fresh clone has neither. **Rebuild after editing any Blade template** — Tailwind scans Blade for class names at build time, so new classes are silently missing until `npm run build`:
 
 ```bash
 npm run build     # required after Blade changes; public/build is gitignored
@@ -58,7 +58,12 @@ No static analysis (no PHPStan/Psalm) and no JS/TS linter or formatter. `compose
 ## Environment
 
 - XAMPP: `php` is `C:\xampp\php\php.exe` (8.2.12, ZTS). Every `php`/`composer` call prints `Warning: Module "openssl" is already loaded` — harmless noise, not a failure.
-- **Not a git repository.** No commits, branches, or diffs unless the user explicitly asks.
+- **Now a git repository** (branch `main`, remote `github.com/deadlyfee07/propsal-wulan-web-penghitung-berat-badan.git`, HTTPS). Commit like any other project, but only when the user asks.
+- A **fresh clone has no `vendor/`, no `node_modules/`, and no `public/build/`** — all three are gitignored. Bootstrap before anything works:
+  ```bash
+  composer install && npm install && npm run build
+  ```
+  `php artisan key:generate` on the fresh clone is expected and safe (there is no `.env` in the repo); copy `.env.example` first.
 - `database/database.sqlite` exists but holds only the three stock migrations (`users`, `cache`, `jobs`) — the app itself writes no tables. `SESSION_DRIVER`, `CACHE_STORE`, and `QUEUE_CONNECTION` are all `database`, so `migrate:fresh` would wipe live sessions and cache.
 - `.env` has a generated `APP_KEY`. Do **not** run `php artisan key:generate` or `composer setup` casually: `key:generate` overwrites the key and breaks existing sessions/encrypted data, and `composer setup` also runs `migrate --force`.
 - `APP_URL=http://localhost` with no subdirectory, so absolute URLs built outside an HTTP request point at the domain root. Under XAMPP the app is reached at `http://localhost/Aplikasi_Pengukur_Berat_Badan_Berbasis_BMI_dan_Analisis_Kalori/public`.
